@@ -1,0 +1,16 @@
+{
+  "presets": [[
+    "env", {
+      "targets": {
+        "browsers": [
+          "> 1%",
+          "last 2 versions",
+          "not ie <= 10"
+        ]
+      },
+      "useBuiltIns": true,
+      "debug": false
+    }
+  ], "react", "stage-0"],
+  "plugins": ["react-hot-loader/babel", "transform-decorators-legacy", "add-module-exports", ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]]
+}

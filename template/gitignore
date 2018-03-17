@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+npm-debug.log*
+.DS_Store
+.vscode
+.idea/
+.med/
+.kube/

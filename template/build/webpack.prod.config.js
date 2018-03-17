@@ -1,0 +1,57 @@
+var path = require('path');
+var webpack = require('webpack');
+var base = require('./webpack.config');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+base.mode = 'production';
+base.devtool = 'source-map';
+// add hot-reload related code to entry chunks
+Object.keys(base.entry).forEach(function (name) {
+    // base.entry[name] = ['babel-polyfill'].concat(base.entry[name]);
+    base.entry[name] = [].concat(base.entry[name]);
+});
+// use hash filename to support long-term caching
+base.output.filename = 'static/js/[name].[chunkhash].js';
+base.output.chunkFilename = 'static/js/[name].[chunkhash].js';
+
+base.optimization = {
+    runtimeChunk: {
+        name: "manifest"
+    },
+    splitChunks: {
+        cacheGroups: {
+            common: {
+                test: /[\\/]node_modules[\\/]/,
+                name: "common",
+                chunks: "all"
+            }
+        }
+    }
+};
+
+base.plugins.push(
+    new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+            compress: {
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true,
+                conditionals: true,
+                unused: true,
+                comparisons: true,
+                sequences: true,
+                dead_code: true,
+                evaluate: true,
+                if_return: true
+            }
+        }
+    }),
+    new ExtractTextPlugin("static/css/[name].[contenthash].css", {
+        allChunks: true
+    }),
+    new webpack.HashedModuleIdsPlugin()
+);
+
+module.exports = base;

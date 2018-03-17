@@ -1,0 +1,45 @@
+/**
+ * Created by liudonghui on 17/9/8.
+ */
+jest.mock('../../src/network');
+import * as actions from '../../src/actions/dashboard';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import promiseMiddleware from '../../src/middlewares/promiseMiddleware';
+
+const middlewares = [thunk, promiseMiddleware({ promiseTypeSuffixes: ['PENDING', 'SUCCESS', 'ERROR'] })];
+const mockStore = configureMockStore(middlewares);
+
+describe('dashboard actions', () => {
+    test('should create an action to change name', () => {
+        const expectedAction = {
+            type: actions.CHANGENAME,
+            payload: {
+                name: 'dhl'
+            }
+        }
+        expect(actions.changeName('dhl')).toEqual(expectedAction);
+    })
+
+    test('should create an action to submit', () => {
+        const expectedAction = {
+            type: actions.SUBMIT_SUCCESS,
+            payload: {
+                code: 0,
+                data: {
+                    name: 'dhl',
+                    age: '29',
+                    nickname: '天下第一帅!',
+                }
+            }
+        };
+        const store = mockStore({ userInfo: {} });
+        expect.assertions(1);
+        return store.dispatch(actions.submit('dhl')).payload.promise.then((res) => {
+            expect({
+                type: res.type,
+                payload: res.payload.data
+            }).toEqual(expectedAction);
+        });
+    })
+})
