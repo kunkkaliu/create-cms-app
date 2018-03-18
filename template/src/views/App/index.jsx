@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import styles from './index.less';
-import AuthorizedRoute from '../../components/Authorized/AuthorizedRoute';
+import AuthorizedRoute from '../../components/AuthorizedRoute';
 import GlobalHeader from '../../components/GlobalHeader';
 import GlobalFooter from '../../components/GlobalFooter';
 import Exception from '../../components/Exception';
@@ -12,9 +12,11 @@ import Sidebar from '../../components/Sidebar';
 import Dashboard from '../Dashboard';
 import mapToProps from './mapping';
 import { netApi as api } from '../../network';
+import connectRoute from '../../components/ConnectRoute';
 import logo from '../../assets/img/logo.svg';
 
 const { Content, Header, Footer } = Layout;
+const DashboardWrapper = connectRoute(Dashboard);
 
 // @connect(mapToProps.mapStateToProps)
 class App extends React.Component {
@@ -118,11 +120,10 @@ class App extends React.Component {
                         <Content style={{ margin: '24px 24px 0', height: '100%' }}>
                             <Switch>
                                 <AuthorizedRoute
-                                    component={Dashboard}
+                                    component={DashboardWrapper}
                                     path='/dashboard'
                                     exact
-                                    authority={this.authority()}
-                                    currentAuthority={localStorage.getItem('role')}
+                                    authority={this.authority}
                                     redirectPath='/exception/403'
                                 />
                                 <Route path='/exception/403' render={() => <Exception type='403' style={{ minHeight: 500, height: '80%' }} />} />

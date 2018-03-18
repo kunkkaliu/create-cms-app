@@ -7,6 +7,7 @@ import styles from './index.less';
 
 class Exception extends React.PureComponent {
     render() {
+        console.log('exception');
         const {
             type,
             title,
