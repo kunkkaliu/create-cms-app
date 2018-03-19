@@ -16,6 +16,11 @@ class Menus extends React.PureComponent {
         updateOpenKeys(newOpenKeys);
     };
 
+    menuClickHandle = () => {
+        const { callback } = this.props;
+        callback && callback(false);
+    };
+
     getMenus = menus =>
         menus.map((menu, i) => {
             if (!menu.child || menu.child.length == 0) {
@@ -69,6 +74,7 @@ class Menus extends React.PureComponent {
                 theme={menuTheme}
                 selectedKeys={[activeKey]}
                 onOpenChange={this.onOpenChange}
+                onClick={this.menuClickHandle}
                 style={{ padding: '16px 0', width: '100%' }}
             >
                 {this.getMenus(menus, '')}
@@ -84,6 +90,7 @@ Menus.propTypes = {
     menuTheme: PropTypes.string,
     callback: PropTypes.func,
     updateOpenKeys: PropTypes.func,
+    location: PropTypes.object,
 };
 
 export default Menus;

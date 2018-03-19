@@ -144,6 +144,12 @@ class App extends React.Component {
 
 App.propTypes = {
     history: PropTypes.object,
+    getMenu: PropTypes.func,
+    menus: PropTypes.array,
+    openKeys: PropTypes.array,
+    updateOpenKeys: PropTypes.func,
+    location: PropTypes.object,
+    user: PropTypes.object,
 };
 
 export default connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)(App);

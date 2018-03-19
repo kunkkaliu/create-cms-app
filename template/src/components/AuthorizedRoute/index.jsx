@@ -21,21 +21,28 @@ class AuthorizedRoute extends React.PureComponent {
         this.unmount = true;
     }
 
-    getAuth = async () => {
-        let res = await this.props.authority();
-        if (res && res.data && res.data.code == 0) {
+    getAuth = () => {
+        this.props.authority().then((res) => {
+            if (res && res.data && res.data.code == 0) {
+                !this.unmount &&
+                this.setState({
+                    auth: true,
+                    hasAuthed: true,
+                });
+            } else {
+                !this.unmount &&
+                this.setState({
+                    auth: true,
+                    hasAuthed: true,
+                });
+            }
+        }).catch((err) => {
             !this.unmount &&
             this.setState({
                 auth: true,
                 hasAuthed: true,
             });
-        } else {
-            !this.unmount &&
-            this.setState({
-                auth: false,
-                hasAuthed: true,
-            });
-        }
+        });
     }
 
     render() {
@@ -58,11 +65,12 @@ class AuthorizedRoute extends React.PureComponent {
         }
         const {
             component: Component,
+            redirectPath,
             ...rest
         } = this.props;
         return (
             <Route {...rest} render={props => (
-                auth ? <Component {...props} /> : <Redirect to={{ pathname: '/login' }} />
+                auth ? <Component {...props} /> : <Redirect to={{ pathname: redirectPath }} />
             )}/>
         );
     }
@@ -70,6 +78,8 @@ class AuthorizedRoute extends React.PureComponent {
 
 AuthorizedRoute.propTypes = {
     authority: PropTypes.func.isRequired,
+    component: PropTypes.func,
+    redirectPath: PropTypes.string,
 };
 
 export default AuthorizedRoute;

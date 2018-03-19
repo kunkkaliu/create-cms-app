@@ -94,6 +94,17 @@ class GlobalHeader extends React.PureComponent {
 
 GlobalHeader.propTypes = {
     user: PropTypes.object,
+    logout: PropTypes.func,
+    menus: PropTypes.array,
+    openKeys: PropTypes.array,
+    collapsed: PropTypes.bool,
+    updateOpenKeys: PropTypes.func,
+    switchMenuPopover: PropTypes.func,
+    isMobile: PropTypes.bool,
+    menuPopoverVisible: PropTypes.bool,
+    toggle: PropTypes.func,
+    logo: PropTypes.string,
+    location: PropTypes.object,
 };
 
 export default GlobalHeader;

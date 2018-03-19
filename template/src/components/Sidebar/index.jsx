@@ -55,7 +55,6 @@ class Sidebar extends React.PureComponent {
             updateOpenKeys,
             location,
         };
-
         return (
             <Sider
                 trigger={null}
@@ -79,6 +78,11 @@ class Sidebar extends React.PureComponent {
 
 Sidebar.propTypes = {
     collapsed: PropTypes.bool,
+    updateOpenKeys: PropTypes.func,
+    location: PropTypes.object,
+    menus: PropTypes.array,
+    openKeys: PropTypes.array,
+    logo: PropTypes.string,
 };
 
 export default Sidebar;
