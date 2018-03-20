@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import store from './store';
 import './index.less';
 import Root from './containers/Root';
+import FastClick from 'fastclick';
 
 render(
     <AppContainer>
@@ -27,3 +28,5 @@ if (module.hot) {
         );
     });
 }
+
+FastClick.attach(document.body);

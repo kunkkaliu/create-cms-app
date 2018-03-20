@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Dropdown, Menu, Popover, Spin, Divider, Avatar } from 'antd';
+import { Icon, Dropdown, Menu, Spin, Divider, Avatar } from 'antd';
+import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'react-router-dom';
-import Menus from '../Menus';
 import styles from './index.less';
 
 class GlobalHeader extends React.PureComponent {
@@ -16,6 +16,23 @@ class GlobalHeader extends React.PureComponent {
             </Menu>
         );
     }
+
+    componentWillUnmount() {
+        this.triggerResizeEvent.cancel();
+    }
+    toggle = () => {
+        const { toggle } = this.props;
+        toggle();
+        this.triggerResizeEvent();
+    }
+
+    @Debounce(600)
+    triggerResizeEvent() {
+        const event = document.createEvent('HTMLEvents');
+        event.initEvent('resize', true, false);
+        window.dispatchEvent(event);
+    }
+
     handleLogOut = () => {
         const { logout } = this.props;
         logout().payload.promise.then((res) => {
@@ -30,27 +47,11 @@ class GlobalHeader extends React.PureComponent {
         console.log('Header');
         const {
             user,
-            menus,
-            openKeys,
             collapsed,
-            updateOpenKeys,
-            switchMenuPopover,
             isMobile,
-            menuPopoverVisible,
-            toggle,
             logo,
-            location,
         } = this.props;
 
-        const menusProps = {
-            menus,
-            openKeys,
-            collapsed: false,
-            menuTheme: 'light',
-            callback: switchMenuPopover,
-            updateOpenKeys,
-            location,
-        };
         return (
             <div className={styles.header}>
                 {
@@ -64,16 +65,7 @@ class GlobalHeader extends React.PureComponent {
                             <Divider type="vertical" key="line" />,
                         ]) : null
                 }
-                {
-                    isMobile ?
-                        <Popover overlayClassName='popover-menu' placement='bottomLeft' trigger='click'
-                            onVisibleChange={switchMenuPopover} visible={menuPopoverVisible}
-                            content={<Menus {...menusProps}/>}>
-                            <Icon className={styles.trigger} type='bars' />
-                        </Popover>
-                        :
-                        <Icon className={styles.trigger} onClick={toggle} type={collapsed ? 'menu-unfold' : 'menu-fold'} />
-                }
+                <Icon className={styles.trigger} onClick={this.toggle} type={collapsed ? 'menu-unfold' : 'menu-fold'} />
                 <div className={styles.right}>
                     {
                         user.name ?
@@ -95,16 +87,10 @@ class GlobalHeader extends React.PureComponent {
 GlobalHeader.propTypes = {
     user: PropTypes.object,
     logout: PropTypes.func,
-    menus: PropTypes.array,
-    openKeys: PropTypes.array,
     collapsed: PropTypes.bool,
-    updateOpenKeys: PropTypes.func,
-    switchMenuPopover: PropTypes.func,
     isMobile: PropTypes.bool,
-    menuPopoverVisible: PropTypes.bool,
     toggle: PropTypes.func,
     logo: PropTypes.string,
-    location: PropTypes.object,
 };
 
 export default GlobalHeader;

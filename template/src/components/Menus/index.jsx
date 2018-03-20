@@ -17,8 +17,8 @@ class Menus extends React.PureComponent {
     };
 
     menuClickHandle = () => {
-        const { callback } = this.props;
-        callback && callback(false);
+        const { isMobile, toggle } = this.props;
+        isMobile && toggle();
     };
 
     getMenus = menus =>
@@ -88,9 +88,10 @@ Menus.propTypes = {
     openKeys: PropTypes.array,
     collapsed: PropTypes.bool,
     menuTheme: PropTypes.string,
-    callback: PropTypes.func,
+    toggle: PropTypes.func,
     updateOpenKeys: PropTypes.func,
     location: PropTypes.object,
+    isMobile: PropTypes.bool,
 };
 
 export default Menus;

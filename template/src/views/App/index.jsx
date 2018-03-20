@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
+import { enquireScreen } from 'enquire-js';
 import styles from './index.less';
 import AuthorizedRoute from '../../components/AuthorizedRoute';
 import GlobalHeader from '../../components/GlobalHeader';
 import GlobalFooter from '../../components/GlobalFooter';
 import Exception from '../../components/Exception';
-import Sidebar from '../../components/Sidebar';
+import SiderBar from '../../components/SiderBar';
 import Dashboard from '../Dashboard';
 import mapToProps from './mapping';
 import { netApi as api } from '../../network';
@@ -18,32 +19,41 @@ import logo from '../../assets/img/logo.svg';
 const { Content, Header, Footer } = Layout;
 const DashboardWrapper = connectRoute(Dashboard);
 
+let isMobile;
+enquireScreen((b) => {
+    isMobile = b;
+});
+
 // @connect(mapToProps.mapStateToProps)
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             collapsed: false,
-            isMobile: document.body.clientWidth < 769,
-            menuPopoverVisible: false,
+            isMobile,
         };
         this.resizeTid = null;
     }
 
     componentDidMount() {
         this.props.getMenu();
-        let tid;
-        window.onresize = () => {
-            clearTimeout(tid);
-            tid = setTimeout(() => {
-                const isMobile = document.body.clientWidth < 769;
-                if (isMobile != this.state.isMobile) {
-                    this.setState({
-                        isMobile: isMobile,
-                    });
-                }
-            }, 300);
-        };
+        enquireScreen((mobile) => {
+            this.setState({
+                isMobile: mobile,
+            });
+        });
+        // let tid;
+        // window.onresize = () => {
+        //     clearTimeout(tid);
+        //     tid = setTimeout(() => {
+        //         const isMobile = document.body.clientWidth < 769;
+        //         if (isMobile != this.state.isMobile) {
+        //             this.setState({
+        //                 isMobile: isMobile,
+        //             });
+        //         }
+        //     }, 300);
+        // };
     }
 
     toggle = () => {
@@ -65,12 +75,6 @@ class App extends React.Component {
         }, 600);
     }
 
-    switchMenuPopover = (e) => {
-        this.setState({
-            menuPopoverVisible: e,
-        });
-    }
-
     authority = () => api.post('/auth/passtest');
 
     render() {
@@ -83,7 +87,7 @@ class App extends React.Component {
             user,
         } = this.props;
 
-        const { collapsed, isMobile, menuPopoverVisible } = this.state;
+        const { collapsed, isMobile } = this.state;
 
         const siderProps = {
             menus,
@@ -92,18 +96,15 @@ class App extends React.Component {
             updateOpenKeys,
             location,
             logo,
+            isMobile,
+            toggle: this.toggle,
         };
 
         const headerProps = {
-            menus,
             user,
-            openKeys,
             collapsed,
             toggle: this.toggle,
-            updateOpenKeys,
             isMobile,
-            menuPopoverVisible,
-            switchMenuPopover: this.switchMenuPopover,
             logout: this.handleLogout,
             location,
             logo,
@@ -112,7 +113,7 @@ class App extends React.Component {
         return (
             <div className={styles.app}>
                 <Layout>
-                    <Sidebar {...siderProps} />
+                    <SiderBar {...siderProps} />
                     <Layout>
                         <Header style={{ padding: 0 }}>
                             <GlobalHeader {...headerProps} />

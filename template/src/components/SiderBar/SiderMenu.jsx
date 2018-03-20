@@ -37,7 +37,7 @@ class Sidebar extends React.PureComponent {
     }
 
     render() {
-        console.log('Sidebar');
+        console.log('SiderMenu');
         const {
             menus,
             openKeys,
@@ -45,6 +45,8 @@ class Sidebar extends React.PureComponent {
             updateOpenKeys,
             location,
             logo,
+            isMobile,
+            toggle,
         } = this.props;
 
         const menusProps = {
@@ -54,6 +56,8 @@ class Sidebar extends React.PureComponent {
             menuTheme: 'dark',
             updateOpenKeys,
             location,
+            isMobile,
+            toggle,
         };
         return (
             <Sider
@@ -83,6 +87,8 @@ Sidebar.propTypes = {
     menus: PropTypes.array,
     openKeys: PropTypes.array,
     logo: PropTypes.string,
+    isMobile: PropTypes.bool,
+    toggle: PropTypes.func,
 };
 
 export default Sidebar;

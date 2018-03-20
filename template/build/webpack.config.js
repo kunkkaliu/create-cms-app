@@ -75,6 +75,15 @@ module.exports = {
                 }
             },
             {
+                test: /\.css?$/,
+                use: ['style-loader', {
+                    loader: 'css-loader',
+                    options: {
+                        minimize: true
+                    }
+                }, 'postcss-loader']
+            },
+            {
                 test: /\.less?$/,
                 exclude: /node_modules/,
                 // use: ['style-loader', {
