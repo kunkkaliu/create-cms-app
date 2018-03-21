@@ -20,7 +20,7 @@ class SiderBar extends React.PureComponent {
                     level={null}
                     iconChild={null}
                     open={!collapsed}
-                    onMaskClick={() => { this.props.toggle(true); }}
+                    onMaskClick={() => { this.props.onCollapse(true); }}
                     width="256px"
                 >
                     <SiderMenu {...this.props} collapsed={isMobile ? false : collapsed} />
@@ -33,7 +33,7 @@ class SiderBar extends React.PureComponent {
 SiderBar.propTypes = {
     collapsed: PropTypes.bool,
     isMobile: PropTypes.bool,
-    toggle: PropTypes.func,
+    onCollapse: PropTypes.func,
 };
 
 export default SiderBar;

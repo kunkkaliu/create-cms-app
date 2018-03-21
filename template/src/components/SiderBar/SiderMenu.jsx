@@ -46,7 +46,7 @@ class Sidebar extends React.PureComponent {
             location,
             logo,
             isMobile,
-            toggle,
+            onCollapse,
         } = this.props;
 
         const menusProps = {
@@ -57,7 +57,7 @@ class Sidebar extends React.PureComponent {
             updateOpenKeys,
             location,
             isMobile,
-            toggle,
+            onCollapse,
         };
         return (
             <Sider
@@ -66,6 +66,7 @@ class Sidebar extends React.PureComponent {
                 breakpoint="lg"
                 collapsed={collapsed}
                 width={256}
+                onCollapse={onCollapse}
                 className={styles.sider}
             >
                 <div className={styles.logo} key="logo">
@@ -88,7 +89,7 @@ Sidebar.propTypes = {
     openKeys: PropTypes.array,
     logo: PropTypes.string,
     isMobile: PropTypes.bool,
-    toggle: PropTypes.func,
+    onCollapse: PropTypes.func,
 };
 
 export default Sidebar;

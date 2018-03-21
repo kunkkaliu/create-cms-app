@@ -15,22 +15,34 @@ class GlobalHeader extends React.PureComponent {
                 </Menu.Item>
             </Menu>
         );
+        this.spinStyle = {
+            marginLeft: 8,
+        };
+        this.logoStyle = {
+            verticalAlign: 'middle',
+        };
+        this.triggerMethod = ['hover', 'click'];
     }
 
     componentWillUnmount() {
         this.triggerResizeEvent.cancel();
     }
+
     toggle = () => {
-        const { toggle } = this.props;
-        toggle();
+        const { onCollapse, collapsed } = this.props;
+        onCollapse(!collapsed);
         this.triggerResizeEvent();
     }
 
     @Debounce(600)
     triggerResizeEvent() {
-        const event = document.createEvent('HTMLEvents');
-        event.initEvent('resize', true, false);
-        window.dispatchEvent(event);
+        if (document.createEvent) {
+            const event = document.createEvent('HTMLEvents');
+            event.initEvent('resize');
+            window.dispatchEvent(event);
+        } else if (document.createEventObject) {
+            window.fireEvent('onresize');
+        }
     }
 
     handleLogOut = () => {
@@ -59,7 +71,7 @@ class GlobalHeader extends React.PureComponent {
                         ([
                             (
                                 <Link to="/" className={styles.logo} key="logo">
-                                    <img style={{ verticalAlign: 'middle' }} src={logo} alt="logo" width="32" />
+                                    <img style={this.logoStyle} src={logo} alt="logo" width="32" />
                                 </Link>
                             ),
                             <Divider type="vertical" key="line" />,
@@ -69,14 +81,14 @@ class GlobalHeader extends React.PureComponent {
                 <div className={styles.right}>
                     {
                         user.name ?
-                            <Dropdown overlay={this.menu}>
+                            <Dropdown overlay={this.menu} trigger={this.triggerMethod}>
                                 <span className={`${styles.action} ${styles.account}`}>
                                     <Avatar size="small" className={styles.avatar} src={user.avatar} />
                                     <span className={styles.name}>{user.name}</span>
                                 </span>
                             </Dropdown>
                             :
-                            <Spin size="small" style={{ marginLeft: 8 }} />
+                            <Spin size="small" style={this.spinStyle} />
                     }
                 </div>
             </div>
@@ -89,7 +101,7 @@ GlobalHeader.propTypes = {
     logout: PropTypes.func,
     collapsed: PropTypes.bool,
     isMobile: PropTypes.bool,
-    toggle: PropTypes.func,
+    onCollapse: PropTypes.func,
     logo: PropTypes.string,
 };
 

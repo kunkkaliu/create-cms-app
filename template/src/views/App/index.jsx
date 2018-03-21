@@ -29,10 +29,8 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapsed: false,
             isMobile,
         };
-        this.resizeTid = null;
     }
 
     componentDidMount() {
@@ -42,37 +40,6 @@ class App extends React.Component {
                 isMobile: mobile,
             });
         });
-        // let tid;
-        // window.onresize = () => {
-        //     clearTimeout(tid);
-        //     tid = setTimeout(() => {
-        //         const isMobile = document.body.clientWidth < 769;
-        //         if (isMobile != this.state.isMobile) {
-        //             this.setState({
-        //                 isMobile: isMobile,
-        //             });
-        //         }
-        //     }, 300);
-        // };
-    }
-
-    toggle = () => {
-        this.setState({
-            collapsed: !this.state.collapsed,
-        });
-        if (this.resizeTid) {
-            clearTimeout(this.resizeTid);
-            this.resizeTid = null;
-        }
-        this.resizeTid = setTimeout(() => {
-            if (document.createEvent) {
-                let event = document.createEvent('HTMLEvents');
-                event.initEvent('resize');
-                window.dispatchEvent(event);
-            } else if (document.createEventObject) {
-                window.fireEvent('onresize');
-            }
-        }, 600);
     }
 
     authority = () => api.post('/auth/passtest');
@@ -85,9 +52,11 @@ class App extends React.Component {
             updateOpenKeys,
             location,
             user,
+            collapsed,
+            updateCollapsed,
         } = this.props;
 
-        const { collapsed, isMobile } = this.state;
+        const { isMobile } = this.state;
 
         const siderProps = {
             menus,
@@ -97,13 +66,13 @@ class App extends React.Component {
             location,
             logo,
             isMobile,
-            toggle: this.toggle,
+            onCollapse: updateCollapsed,
         };
 
         const headerProps = {
             user,
             collapsed,
-            toggle: this.toggle,
+            onCollapse: updateCollapsed,
             isMobile,
             logout: this.handleLogout,
             location,
@@ -151,6 +120,8 @@ App.propTypes = {
     updateOpenKeys: PropTypes.func,
     location: PropTypes.object,
     user: PropTypes.object,
+    collapsed: PropTypes.bool,
+    updateCollapsed: PropTypes.func,
 };
 
 export default connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)(App);

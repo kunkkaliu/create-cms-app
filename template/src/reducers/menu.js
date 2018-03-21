@@ -5,6 +5,7 @@ import {
     GETMENU_PENDING,
     GETMENU_SUCCESS,
     UPDATE_OPENKEYS,
+    UPDATE_COLLAPSED,
 } from '../actions/menu';
 
 import { getMenus } from '../utils';
@@ -13,6 +14,7 @@ const initialState = {
     menus: [],
     openKeys: [],
     user: {},
+    collapsed: false,
 };
 
 export default function menu(state = initialState, action = {}) {
@@ -34,6 +36,11 @@ export default function menu(state = initialState, action = {}) {
         case UPDATE_OPENKEYS:
             return Object.assign({}, state, {
                 openKeys: action.payload.openKeys,
+            });
+
+        case UPDATE_COLLAPSED:
+            return Object.assign({}, state, {
+                collapsed: action.payload.collapsed,
             });
 
         default:

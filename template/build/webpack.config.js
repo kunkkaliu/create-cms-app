@@ -11,6 +11,8 @@ function src(dir) {
     return resolve(path.join('src', dir))
 }
 
+var isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
     entry: {
         main: src('index.jsx')
@@ -92,17 +94,24 @@ module.exports = {
                 //         minimize: true
                 //     }
                 // }, 'postcss-loader', 'less-loader']
-                use: ExtractTextPlugin.extract({
+                use: isProduction ? ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [{
                         loader: 'css-loader',
                         options: {
                             minimize: true,
                             modules: true,
-                            localIdentName: '[local]_[hash:base64:5]'
+                            localIdentName: '[local]___[hash:base64:5]'
                         }
                     }, 'postcss-loader', 'less-loader']
-                })
+                }) : ['style-loader', {
+                    loader: 'css-loader',
+                    options: {
+                        minimize: true,
+                        modules: true,
+                        localIdentName: '[local]___[hash:base64:5]'
+                    }
+                }, 'postcss-loader', 'less-loader']
             },
             {
                 test: /\.less?$/,
