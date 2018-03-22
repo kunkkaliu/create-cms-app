@@ -50,7 +50,7 @@
     }
   },
   "dependencies": {
-    "antd": "^3.3.0",
+    "antd": "^3.3.1",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.14.1",
     "babel-polyfill": "^6.23.0",
@@ -107,7 +107,7 @@
     "less-loader": "^4.1.0",
     "postcss-loader": "^2.1.1",
     "postcss-px2rem": "^0.3.0",
-    "react-test-renderer": "^16.0.0",
+    "react-test-renderer": "16.2.0",
     "redux-mock-store": "^1.2.3",
     "rimraf": "^2.6.1",
     "style-loader": "^0.20.3",
