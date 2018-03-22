@@ -1,6 +1,6 @@
 {
   "name": "create-cms-app",
-  "version": "0.1.7",
+  "version": "1.0.0",
   "description": "react redux react-router jest eslint antd",
   "main": "index.js",
   "scripts": {
