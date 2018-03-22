@@ -1,16 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './index.less';
 import { getCurrentMenu, getPathArray } from '../../utils';
-import Menus from '../Menus';
 
 const { Sider } = Layout;
+const { SubMenu } = Menu;
 
 class Sidebar extends React.PureComponent {
-    updateKeys = (pathname) => {
-        const { updateOpenKeys } = this.props;
+    constructor(props) {
+        super(props);
+        this.state = {
+            openKeys: this.getDefaultOpenKeys(props),
+        };
+    }
+
+    getDefaultOpenKeys = (props) => {
+        const { location: { pathname } } = props || this.props;
         const openkeys = [];
         let pathArray = [];
         let current = getCurrentMenu(pathname);
@@ -22,17 +29,57 @@ class Sidebar extends React.PureComponent {
                 openkeys.push(`sub${item.id}`);
             }
         });
-        updateOpenKeys(openkeys);
+        return openkeys;
     }
 
-    componentDidMount() {
-        const { location } = this.props;
-        this.updateKeys(location.pathname);
-    }
+    onOpenChange = (nextOpenKeys) => {
+        const { openKeys } = this.state;
+        const latestOpenKey = nextOpenKeys.find(key => !(openKeys.indexOf(key) > -1));
+        let newOpenKeys = [];
+        if (latestOpenKey) {
+            newOpenKeys = [].concat(latestOpenKey);
+        }
+        this.setState({
+            openKeys: newOpenKeys,
+        });
+    };
+
+    menuClickHandle = () => {
+        const { isMobile, onCollapse } = this.props;
+        isMobile && onCollapse(true);
+    };
+
+    getMenus = menus =>
+        menus.map((menu, i) => {
+            if (!menu.child || menu.child.length == 0) {
+                return (
+                    <Menu.Item key={'menu' + menu.id}>
+                        <Link
+                            to={menu.router}
+                            target={undefined}
+                            replace={menu.router === this.props.location.pathname}
+
+                        >
+                            {<span>{menu.icon && <Icon type={menu.icon}/>}<span className="nav-menu-text">{menu.name}</span></span>}
+                        </Link>
+                    </Menu.Item>
+                );
+            }
+            return (
+                <SubMenu
+                    key={'sub' + menu.id}
+                    title={<span>{menu.icon && <Icon type={menu.icon} />}<span className="nav-sub-text">{menu.name}</span></span>}
+                >
+                    {this.getMenus(menu.child)}
+                </SubMenu>
+            );
+        })
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.location && this.props.location && (nextProps.location.pathname != this.props.location.pathname)) {
-            this.updateKeys(nextProps.location.pathname);
+            this.setState({
+                openKeys: this.getDefaultOpenKeys(nextProps),
+            });
         }
     }
 
@@ -40,25 +87,23 @@ class Sidebar extends React.PureComponent {
         console.log('SiderMenu');
         const {
             menus,
-            openKeys,
             collapsed,
-            updateOpenKeys,
             location,
             logo,
-            isMobile,
             onCollapse,
         } = this.props;
 
-        const menusProps = {
-            menus,
+        const { openKeys } = this.state;
+
+        const menuProps = collapsed ? {} : {
             openKeys,
-            collapsed,
-            menuTheme: 'dark',
-            updateOpenKeys,
-            location,
-            isMobile,
-            onCollapse,
         };
+
+        let activeKey = '';
+        let current = getCurrentMenu(location.pathname);
+        if (current) {
+            activeKey = 'menu' + current.id;
+        }
         return (
             <Sider
                 trigger={null}
@@ -75,7 +120,18 @@ class Sidebar extends React.PureComponent {
                         <h1>瓜子后服务</h1>
                     </Link>
                 </div>
-                <Menus {...menusProps} />
+                <Menu
+                    key="Menu"
+                    {...menuProps}
+                    mode='inline'
+                    theme='dark'
+                    selectedKeys={[activeKey]}
+                    onOpenChange={this.onOpenChange}
+                    onClick={this.menuClickHandle}
+                    style={{ padding: '16px 0', width: '100%' }}
+                >
+                    {this.getMenus(menus, '')}
+                </Menu>
             </Sider>
         );
     }
@@ -83,10 +139,8 @@ class Sidebar extends React.PureComponent {
 
 Sidebar.propTypes = {
     collapsed: PropTypes.bool,
-    updateOpenKeys: PropTypes.func,
     location: PropTypes.object,
     menus: PropTypes.array,
-    openKeys: PropTypes.array,
     logo: PropTypes.string,
     isMobile: PropTypes.bool,
     onCollapse: PropTypes.func,

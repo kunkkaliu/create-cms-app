@@ -48,8 +48,6 @@ class App extends React.Component {
         console.log('App');
         const {
             menus,
-            openKeys,
-            updateOpenKeys,
             location,
             user,
             collapsed,
@@ -60,9 +58,7 @@ class App extends React.Component {
 
         const siderProps = {
             menus,
-            openKeys,
             collapsed,
-            updateOpenKeys,
             location,
             logo,
             isMobile,
@@ -75,7 +71,6 @@ class App extends React.Component {
             onCollapse: updateCollapsed,
             isMobile,
             logout: this.handleLogout,
-            location,
             logo,
         };
 
@@ -116,8 +111,6 @@ App.propTypes = {
     history: PropTypes.object,
     getMenu: PropTypes.func,
     menus: PropTypes.array,
-    openKeys: PropTypes.array,
-    updateOpenKeys: PropTypes.func,
     location: PropTypes.object,
     user: PropTypes.object,
     collapsed: PropTypes.bool,
