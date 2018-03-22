@@ -2,7 +2,12 @@
 *.rar
 *.log
 .svn
+node_modules/
+coverage/
+dist/
+npm-debug.log*
 .DS_Store
-node_modules
-build
-dist
+.vscode
+.idea/
+.med/
+.kube/
