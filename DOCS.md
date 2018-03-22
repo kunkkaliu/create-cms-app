@@ -6,14 +6,20 @@
 my-app
 |-- dist/              打包输出目录
 |-- __mocks__/         测试静态资源mock目录
+|-- build/             打包脚本目录
+    |-- gen-proto-js.js         生成proto service脚本
+    |-- webpack.config.js       webpack基础配置
+    |-- webpack.dev.config.js   webpack开发环境配置
+    |-- webpack.prod.config.js  webpack生成环境配置
 |-- tests/             测试脚本目录
 |-- src/
     |-- actions/       引起数据流动的action
-    |-- api/           网络请求,mock数据
+    |-- api/           网络请求,mock数据 //已不再使用
     |-- assets/        静态资源
     |-- components/    公用组件
     |-- containers/    最外层容器
     |-- middlewares/   中间件(异步action)
+    |-- network/       网络请求,mock数据
     |-- reducers/      根据不同action改变数据state
     |-- route/         前端路由
     |-- selectors/     mapStateToProps优化器
@@ -24,15 +30,13 @@ my-app
     |-- index.less     样式入口
 |-- .babelrc           babel 配置
 |-- .eslintrc          eslint 代码规范配置
+|-- .eslintignore      eslint 忽略配置
 |-- .gitignore
 |-- index.html         html 入口，打包后自动替换 index.html 入口 js src 地址
 |-- package.json
 |-- postcss.config.js  样式处理配置(px变rem, 增加浏览器兼容前缀)
 |-- README.md
-|-- devServer.js       开发阶段服务环境
-|-- webpack.config.js  编译、打包配置(基础配置)
-|-- webpack.dev.config.js  编译、打包配置(开发环境)
-|-- webpack.prod.config.js  编译、打包配置(生存环境)
+|-- devServer.js       开发环境node服务
 |-- yarn.lock          包管理工具yarn配置文件
 ```
 
