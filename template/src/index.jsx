@@ -17,16 +17,7 @@ render(
 );
 
 if (module.hot) {
-    module.hot.accept('./containers/Root', () => {
-        render(
-            <AppContainer>
-                <Root
-                    store={ store }
-                />
-            </AppContainer>,
-            document.getElementById('root'),
-        );
-    });
+    module.hot.accept();
 }
 
 FastClick.attach(document.body);
