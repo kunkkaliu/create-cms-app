@@ -5,9 +5,9 @@ import {
     GETMENU_PENDING,
     GETMENU_SUCCESS,
     UPDATE_COLLAPSED,
-} from '../actions/menu';
+} from 'actions/menu';
 
-import { getMenus } from '../utils';
+import { getMenus } from 'utils';
 
 const initialState = {
     menus: [],

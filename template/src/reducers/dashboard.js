@@ -4,7 +4,7 @@
 import {
     CHANGENAME,
     SUBMIT_SUCCESS,
-} from '../actions/dashboard';
+} from 'actions/dashboard';
 
 const initialState = {
     name: '',

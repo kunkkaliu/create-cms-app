@@ -16,9 +16,9 @@ base.optimization = {
     },
     splitChunks: {
         cacheGroups: {
-            common: {
+            vendor: {
                 test: /[\\/]node_modules[\\/]/,
-                name: "common",
+                name: "vendor",
                 chunks: "all"
             }
         }

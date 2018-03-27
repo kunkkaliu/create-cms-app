@@ -1,8 +1,8 @@
 /**
- * Created by liudonghui on 17/9/13.
+ * Created by liudonghui on 2018/3/27.
  */
 import { bindActionCreators } from 'redux';
-import { getMenu, updateCollapsed } from '../../actions/menu';
+import { getMenu, updateCollapsed } from 'actions/menu';
 
 export default {
     mapStateToProps: state => ({

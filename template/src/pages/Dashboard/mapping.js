@@ -2,7 +2,7 @@
  * Created by liudonghui on 17/9/13.
  */
 import { bindActionCreators } from 'redux';
-import { changeName, submit } from '../../actions/dashboard';
+import { changeName, submit } from 'actions/dashboard';
 
 export default {
     mapStateToProps: state => ({

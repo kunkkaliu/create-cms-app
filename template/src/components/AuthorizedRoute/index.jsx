@@ -32,14 +32,14 @@ class AuthorizedRoute extends React.PureComponent {
             } else {
                 !this.unmount &&
                 this.setState({
-                    auth: true,
+                    auth: false,
                     hasAuthed: true,
                 });
             }
         }).catch((err) => {
             !this.unmount &&
             this.setState({
-                auth: true,
+                auth: false,
                 hasAuthed: true,
             });
         });
@@ -70,7 +70,7 @@ class AuthorizedRoute extends React.PureComponent {
         } = this.props;
         return (
             <Route {...rest} render={props => (
-                auth ? <Component {...props} /> : <Redirect to={{ pathname: redirectPath }} />
+                auth ? <Component {...props} /> : (redirectPath ? <Redirect to={{ pathname: redirectPath }} /> : null)
             )}/>
         );
     }

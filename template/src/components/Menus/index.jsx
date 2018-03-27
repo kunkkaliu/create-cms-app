@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import { getCurrentMenu } from '../../utils';
+import { getCurrentMenu } from 'utils';
 
 const { SubMenu } = Menu;
 class Menus extends React.PureComponent {

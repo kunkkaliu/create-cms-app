@@ -1,7 +1,7 @@
 /**
  * Created by liudonghui on 17/9/8.
  */
-import { netApi as api } from '../network';
+import { netApi as api } from 'network';
 
 export const CHANGENAME = 'dashboard/reducer/CHANGENAME';
 export const SUBMIT = 'dashboard/reducer/SUBMIT';

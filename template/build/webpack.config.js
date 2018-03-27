@@ -11,8 +11,6 @@ function src(dir) {
     return resolve(path.join('src', dir))
 }
 
-var isProduction = process.env.NODE_ENV === 'production';
-
 module.exports = {
     entry: {
         main: src('index.jsx')
@@ -34,14 +32,20 @@ module.exports = {
                 minifyCSS: true,
                 minifyJS: true
             },
-            chunks: ['manifest', 'common', 'main'],
+            chunks: ['manifest', 'vendor', 'main'],
             // favicon: __dirname + '/favicon.ico',
             chunksSortMode: 'dependency'
         })
     ],
     resolve: {
         alias: {
-            'network': src('network')
+            'network': src('network'),
+            'actions': src('actions'),
+            'components': src('components'),
+            'utils': src('utils'),
+            'assets': src('assets'),
+            'pages': src('pages'),
+            'layouts': src('layouts')
         },
         extensions: ['*', '.js', '.jsx']
     },
@@ -94,17 +98,7 @@ module.exports = {
                 //         minimize: true
                 //     }
                 // }, 'postcss-loader', 'less-loader']
-                use: isProduction ? ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [{
-                        loader: 'css-loader',
-                        options: {
-                            minimize: true,
-                            modules: true,
-                            localIdentName: '[local]___[hash:base64:5]'
-                        }
-                    }, 'postcss-loader', 'less-loader']
-                }) : ['style-loader', {
+                use: ['style-loader', {
                     loader: 'css-loader',
                     options: {
                         minimize: true,

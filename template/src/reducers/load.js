@@ -4,7 +4,7 @@
 import {
     ADDHTTPLOAD,
     DELHTTPLOAD,
-} from '../actions/load';
+} from 'actions/load';
 
 const initialState = {
     httpLength: 0,

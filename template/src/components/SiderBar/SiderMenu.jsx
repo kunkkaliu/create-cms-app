@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './index.less';
-import { getCurrentMenu, getPathArray } from '../../utils';
+import { getCurrentMenu, getPathArray } from 'utils';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
