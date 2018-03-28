@@ -5,7 +5,7 @@ import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'react-router-dom';
 import styles from './index.less';
 
-class GlobalHeader extends React.PureComponent {
+export default class GlobalHeader extends React.PureComponent {
     constructor(props) {
         super(props);
         this.menu = (
@@ -24,6 +24,14 @@ class GlobalHeader extends React.PureComponent {
         this.triggerMethod = ['hover', 'click'];
     }
 
+    static propTypes = {
+        user: PropTypes.object,
+        logout: PropTypes.func,
+        collapsed: PropTypes.bool,
+        isMobile: PropTypes.bool,
+        onCollapse: PropTypes.func,
+        logo: PropTypes.string,
+    }
     componentWillUnmount() {
         this.triggerResizeEvent.cancel();
     }
@@ -95,14 +103,3 @@ class GlobalHeader extends React.PureComponent {
         );
     }
 }
-
-GlobalHeader.propTypes = {
-    user: PropTypes.object,
-    logout: PropTypes.func,
-    collapsed: PropTypes.bool,
-    isMobile: PropTypes.bool,
-    onCollapse: PropTypes.func,
-    logo: PropTypes.string,
-};
-
-export default GlobalHeader;

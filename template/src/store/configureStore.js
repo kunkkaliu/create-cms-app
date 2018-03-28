@@ -1,11 +1,17 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
 import promiseMiddleware from '../middlewares/promiseMiddleware';
 import reducer from '../reducers';
+
+export const history = createHistory();
+const historyMiddleware = routerMiddleware(history);
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware,
     promiseMiddleware({ promiseTypeSuffixes: ['PENDING', 'SUCCESS', 'ERROR'] }),
+    historyMiddleware,
 )(createStore);
 
 /* eslint-disable global-require */

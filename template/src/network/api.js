@@ -4,6 +4,8 @@
  */
 
 import axios from 'axios';
+import { push } from 'react-router-redux';
+import store from '../store';
 
 const pending = []; // 声明一个数组用于存储每个ajax请求的取消函数和ajax标识
 const APICancelToken = axios.CancelToken;
@@ -49,8 +51,15 @@ export function useInterceptors(netApi) {
     }, (error) => {
         // Do something with response error
         if (error && error.response && error.response.status === '401') {
-            const ssoURL = (error && error.response && error.response.data && error.response.data.data) || '';
-            document.location.href = ssoURL + encodeURIComponent(document.location.href);
+            const location = (store.getState() && store.getState().router && store.getState().router.location) || window.location;
+            store.dispatch(push({
+                pathname: '/login',
+                state: {
+                    fromUrl: location.pathname,
+                },
+            }));
+            // const ssoURL = (error && error.response && error.response.data && error.response.data.data) || '';
+            // document.location.href = ssoURL + encodeURIComponent(document.location.href);
         } else if (error && error.response && error.response.data && error.response.data.message) {
             alert(error.response.data.message);
         } else if (error && error.message) {

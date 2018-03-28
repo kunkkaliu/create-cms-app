@@ -4,8 +4,14 @@ import PropTypes from 'prop-types';
 import mapToProps from './mapping';
 import styles from './index.less';
 
-// @connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)
-class Dashboard extends React.PureComponent {
+@connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)
+export default class Dashboard extends React.PureComponent {
+    static propTypes = {
+        name: PropTypes.string,
+        changeName: PropTypes.func,
+        submit: PropTypes.func,
+        userInfo: PropTypes.object,
+    }
     handleSubmit = () => {
         this.props.submit(this.props.name);
     }
@@ -30,13 +36,3 @@ class Dashboard extends React.PureComponent {
         );
     }
 }
-
-Dashboard.propTypes = {
-    name: PropTypes.string,
-    changeName: PropTypes.func,
-    submit: PropTypes.func,
-    userInfo: PropTypes.object,
-};
-
-export default connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)(Dashboard);
-export { Dashboard as DashboardTest };

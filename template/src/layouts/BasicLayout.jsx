@@ -51,6 +51,16 @@ export default class BasicLayout extends React.Component {
         };
     }
 
+    static propTypes = {
+        history: PropTypes.object,
+        getMenu: PropTypes.func,
+        menus: PropTypes.array,
+        location: PropTypes.object,
+        user: PropTypes.object,
+        collapsed: PropTypes.bool,
+        updateCollapsed: PropTypes.func,
+    }
+
     componentDidMount() {
         this.props.getMenu();
         enquireScreen((mobile) => {
@@ -126,13 +136,3 @@ export default class BasicLayout extends React.Component {
         );
     }
 }
-
-BasicLayout.propTypes = {
-    history: PropTypes.object,
-    getMenu: PropTypes.func,
-    menus: PropTypes.array,
-    location: PropTypes.object,
-    user: PropTypes.object,
-    collapsed: PropTypes.bool,
-    updateCollapsed: PropTypes.func,
-};

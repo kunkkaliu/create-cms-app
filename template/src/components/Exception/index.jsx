@@ -5,7 +5,14 @@ import { Button } from 'antd';
 import config from './typeConfig';
 import styles from './index.less';
 
-class Exception extends React.PureComponent {
+export default class Exception extends React.PureComponent {
+    static propTypes = {
+        type: PropTypes.string,
+        title: PropTypes.string,
+        desc: PropTypes.string,
+        img: PropTypes.string,
+        actions: PropTypes.node,
+    }
     render() {
         console.log('exception');
         const {
@@ -39,13 +46,3 @@ class Exception extends React.PureComponent {
         );
     }
 }
-
-Exception.propTypes = {
-    type: PropTypes.string,
-    title: PropTypes.string,
-    desc: PropTypes.string,
-    img: PropTypes.string,
-    actions: PropTypes.node,
-};
-
-export default Exception;

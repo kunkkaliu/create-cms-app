@@ -5,7 +5,17 @@ import { Link } from 'react-router-dom';
 import { getCurrentMenu } from 'utils';
 
 const { SubMenu } = Menu;
-class Menus extends React.PureComponent {
+export default class Menus extends React.PureComponent {
+    static propTypes = {
+        menus: PropTypes.array,
+        openKeys: PropTypes.array,
+        collapsed: PropTypes.bool,
+        menuTheme: PropTypes.string,
+        onCollapse: PropTypes.func,
+        updateOpenKeys: PropTypes.func,
+        location: PropTypes.object,
+        isMobile: PropTypes.bool,
+    }
     onOpenChange = (nextOpenKeys) => {
         const { updateOpenKeys, openKeys } = this.props;
         const latestOpenKey = nextOpenKeys.find(key => !(openKeys.indexOf(key) > -1));
@@ -82,16 +92,3 @@ class Menus extends React.PureComponent {
         );
     }
 }
-
-Menus.propTypes = {
-    menus: PropTypes.array,
-    openKeys: PropTypes.array,
-    collapsed: PropTypes.bool,
-    menuTheme: PropTypes.string,
-    onCollapse: PropTypes.func,
-    updateOpenKeys: PropTypes.func,
-    location: PropTypes.object,
-    isMobile: PropTypes.bool,
-};
-
-export default Menus;

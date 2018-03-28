@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.less';
 
-class GlobalFooter extends React.PureComponent {
+export default class GlobalFooter extends React.PureComponent {
     render() {
         console.log('footer');
         return (
@@ -11,5 +11,3 @@ class GlobalFooter extends React.PureComponent {
         );
     }
 }
-
-export default GlobalFooter;

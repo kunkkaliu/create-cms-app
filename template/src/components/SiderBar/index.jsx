@@ -5,7 +5,12 @@ import DrawerMenu from 'rc-drawer-menu';
 import SiderMenu from './SiderMenu';
 
 
-class SiderBar extends React.PureComponent {
+export default class SiderBar extends React.PureComponent {
+    static propTypes = {
+        collapsed: PropTypes.bool,
+        isMobile: PropTypes.bool,
+        onCollapse: PropTypes.func,
+    }
     render() {
         console.log('SiderBar');
         const {
@@ -29,11 +34,3 @@ class SiderBar extends React.PureComponent {
         );
     }
 }
-
-SiderBar.propTypes = {
-    collapsed: PropTypes.bool,
-    isMobile: PropTypes.bool,
-    onCollapse: PropTypes.func,
-};
-
-export default SiderBar;

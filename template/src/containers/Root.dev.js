@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
+import { Switch, Route } from 'react-router-dom';
+import { history } from '../store/configureStore';
 import AuthorizedRoute from 'components/AuthorizedRoute';
-import Login from 'components/Login';
+import Login from 'pages/Login';
 import BasicLayout from 'layouts/BasicLayout';
 import DevTools from './DevTools';
 
-class Root extends React.Component {
+export default class Root extends React.Component {
+    static propTypes = {
+        store: PropTypes.object,
+    }
+
     authority = () => new Promise((resolve) => {
         setTimeout(() => {
             resolve({
@@ -24,25 +30,20 @@ class Root extends React.Component {
         return (
             <Provider store={ store }>
                 <div>
-                    <Router>
+                    <ConnectedRouter history={history}>
                         <Switch>
                             <Route path='/login' component={Login}/>
                             <AuthorizedRoute
                                 component={BasicLayout}
                                 path='/'
                                 authority={this.authority}
+                                redirectPath='/login'
                             />
                         </Switch>
-                    </Router>
+                    </ConnectedRouter>
                     <DevTools />
                 </div>
             </Provider>
         );
     }
 }
-
-Root.propTypes = {
-    store: PropTypes.object,
-};
-
-export default Root;
