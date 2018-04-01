@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var base = require('./webpack.config');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 base.mode = 'development';
 // base.devtool = 'cheap-module-eval-source-map';
@@ -26,8 +26,8 @@ base.optimization = {
 };
 base.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin("static/css/[name].css", {
-        allChunks: true
+    new MiniCssExtractPlugin({
+        filename: "static/css/[name].css"
     })
 );
 

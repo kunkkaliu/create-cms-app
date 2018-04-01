@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var base = require('./webpack.config');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 base.mode = 'production';
@@ -48,8 +48,8 @@ base.plugins.push(
             }
         }
     }),
-    new ExtractTextPlugin("static/css/[name].[contenthash].css", {
-        allChunks: true
+    new MiniCssExtractPlugin({
+        filename: "static/css/[name].[contenthash].css"
     }),
     new webpack.HashedModuleIdsPlugin()
 );

@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve(dir) {
     return path.join(__dirname, '../', dir)
@@ -92,12 +92,6 @@ module.exports = {
             {
                 test: /\.less?$/,
                 exclude: /node_modules/,
-                // use: ['style-loader', {
-                //     loader: 'css-loader',
-                //     options: {
-                //         minimize: true
-                //     }
-                // }, 'postcss-loader', 'less-loader']
                 use: ['style-loader', {
                     loader: 'css-loader',
                     options: {
@@ -110,21 +104,12 @@ module.exports = {
             {
                 test: /\.less?$/,
                 exclude: /src/,
-                // use: ['style-loader', {
-                //     loader: 'css-loader',
-                //     options: {
-                //         minimize: true
-                //     }
-                // }, 'postcss-loader', 'less-loader']
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [{
-                        loader: 'css-loader',
-                        options: {
-                            minimize: true
-                        }
-                    }, 'postcss-loader', 'less-loader']
-                })
+                use: ['style-loader', MiniCssExtractPlugin.loader, {
+                    loader: 'css-loader',
+                    options: {
+                        minimize: true
+                    }
+                }, 'postcss-loader', 'less-loader']
             }
         ]
     }

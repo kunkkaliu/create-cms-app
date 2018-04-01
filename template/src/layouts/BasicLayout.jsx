@@ -14,10 +14,7 @@ import GlobalFooter from 'components/GlobalFooter';
 import Exception from 'components/Exception';
 import SiderBar from 'components/SiderBar';
 import AuthorizedRoute from 'components/AuthorizedRoute';
-import connectRoute from 'components/ConnectRoute';
-import Dashboard from 'pages/Dashboard';
-
-const DashboardWrapper = connectRoute(Dashboard);
+import routerData from 'utils/router';
 
 const { Content, Header, Footer } = Layout;
 
@@ -114,14 +111,19 @@ export default class BasicLayout extends React.Component {
                             {
                                 redirectData.map(item => <Redirect key={item.from} exact from={item.from} to={item.to} />)
                             }
-                            <AuthorizedRoute
-                                key='/dashboard'
-                                component={DashboardWrapper}
-                                path='/dashboard'
-                                exact
-                                authority={this.authority}
-                                redirectPath='/exception/403'
-                            />
+                            {
+                                routerData.BasicLayout.map(item =>
+                                    (
+                                        <AuthorizedRoute
+                                            key={item.key}
+                                            path={item.path}
+                                            component={item.component}
+                                            exact={item.exact}
+                                            authority={this.authority}
+                                            redirectPath="/exception/403"
+                                        />
+                                    ))
+                            }
                             <Route path='/exception/403' render={() => <Exception type='403' style={{ minHeight: 500, height: '80%' }} />} />
                             <Route path='/exception/500' render={() => <Exception type='500' style={{ minHeight: 500, height: '80%' }} />} />
                             <Redirect exact from='/' to='/dashboard' />
