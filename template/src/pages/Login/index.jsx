@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { Form, Input, Button, Icon, Alert } from 'antd';
 import mapToProps from './mapping';
 import styles from './index.less';
@@ -11,15 +10,13 @@ const FormItem = Form.Item;
 @connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)
 @Form.create()
 export default class Login extends React.PureComponent {
-    static contextTypes = {
-        store: PropTypes.object,
-    }
     static propTypes = {
         location: PropTypes.object,
         login: PropTypes.func,
         form: PropTypes.object,
         loginStatus: PropTypes.string,
         submitting: PropTypes.bool,
+        push: PropTypes.func,
     }
 
     componentDidMount() {
@@ -29,12 +26,12 @@ export default class Login extends React.PureComponent {
         window.history.replaceState(null, 'login', urlParams.href);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        const { loginStatus } = nextProps;
+    componentWillReceiveProps(nextProps) {
+        const { loginStatus, push } = nextProps;
         if (loginStatus !== this.props.loginStatus && loginStatus === 'success') {
             const urlParams = new URL(window.location.href);
             const redirect = urlParams.searchParams.get('redirect');
-            nextContext.store.dispatch(push(redirect || '/dashboard'));
+            push(redirect || '/dashboard');
         }
     }
 

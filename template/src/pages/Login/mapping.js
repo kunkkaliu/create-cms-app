@@ -2,6 +2,7 @@
  * Created by liudonghui on 2018/3/28.
  */
 import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import { login } from 'actions/login';
 
 export default {
@@ -11,5 +12,6 @@ export default {
     }),
     mapDispatchToProps: dispatch => ({
         login: bindActionCreators(login, dispatch),
+        push: bindActionCreators(push, dispatch),
     }),
 };
