@@ -41,7 +41,9 @@ export default class Login extends React.PureComponent {
         e.preventDefault();
         const { form, login } = this.props;
         form.validateFields((err, values) => {
-            login(values);
+            if (!err) {
+                login(values);
+            }
         });
     }
 

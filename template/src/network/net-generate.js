@@ -18,7 +18,7 @@ export function generateNet(config, useInterceptors) {
             mock(request, (data) => {
                 setTimeout(() => {
                     resolve(data);
-                }, 2000);
+                }, 200);
             }));
     }
     const netApi = axios.create(config);

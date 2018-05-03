@@ -8,9 +8,10 @@
           "ie >= 10"
         ]
       },
+      "modules": false,
       "useBuiltIns": true,
       "debug": false
     }
   ], "react", "stage-0"],
-  "plugins": ["react-hot-loader/babel", "transform-decorators-legacy", "add-module-exports", ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]]
+  "plugins": ["react-hot-loader/babel", "transform-decorators-legacy", ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]]
 }

@@ -100,9 +100,12 @@
     "default-case": "off",
     "no-nested-ternary": "off",
     "prefer-promise-reject-errors": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "object-curly-newline": "off",
+    "no-trailing-spaces": "off"
   },
   "globals": {
-    "MOCK": false
+    "MOCK": false,
+    "CODE_ENV": false
   }
 }

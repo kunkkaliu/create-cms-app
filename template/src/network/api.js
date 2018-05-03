@@ -51,7 +51,8 @@ export function useInterceptors(netApi) {
     }, (error) => {
         // Do something with response error
         if (error && error.response && error.response.status === '401') {
-            const location = (store.getState() && store.getState().router && store.getState().router.location) || window.location;
+            const state = store.getState();
+            const location = (state && state.router && state.router.location) || window.location;
             store.dispatch(push({
                 pathname: '/login',
                 state: {

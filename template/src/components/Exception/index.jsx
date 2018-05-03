@@ -13,6 +13,7 @@ export default class Exception extends React.PureComponent {
         img: PropTypes.string,
         actions: PropTypes.node,
     }
+
     render() {
         console.log('exception');
         const {

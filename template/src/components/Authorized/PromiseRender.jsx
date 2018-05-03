@@ -1,19 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Spin } from 'antd';
 
 export default class PromiseRender extends React.PureComponent {
-    unmount = false;
-    state = {
-        component: null,
-    };
-
-    componentDidMount() {
-        this.setRenderComponent(this.props);
+    constructor(props) {
+        super(props);
+        this.unmount = false;
+        this.state = {
+            auth: false,
+            hasAuthed: false,
+        };
     }
 
-    componentWillReceiveProps(nextProps) {
-        // new Props enter
-        // this.setRenderComponent(nextProps);
+    static propTypes = {
+        promise: PropTypes.object,
+        ok: PropTypes.object,
+        error: PropTypes.object,
+    }
+
+    componentDidMount() {
+        this.setRenderComponent();
     }
 
     componentWillUnmount() {
@@ -21,39 +27,48 @@ export default class PromiseRender extends React.PureComponent {
     }
 
     // set render Component : ok or error
-    setRenderComponent(props) {
-        const ok = this.checkIsInstantiation(props.ok);
-        const error = this.checkIsInstantiation(props.error);
-        props.promise
-            .then(() => {
+    setRenderComponent() {
+        this.props.promise.then((res) => {
+            let data = res && res.data;
+            if (res && res.payload) {
+                ({ data } = { ...res.payload });
+            }
+            if (data && data.code === 0) {
                 !this.unmount &&
                 this.setState({
-                    component: ok,
+                    auth: true,
+                    hasAuthed: true,
                 });
-            })
-            .catch(() => {
+            } else {
                 !this.unmount &&
                 this.setState({
-                    component: error,
+                    auth: false,
+                    hasAuthed: true,
                 });
+            }
+        }).catch(() => {
+            !this.unmount &&
+            this.setState({
+                auth: false,
+                hasAuthed: true,
             });
+        });
     }
 
     // Determine whether the incoming component has been instantiated
-    checkIsInstantiation = (target) => {
-        if (!React.isValidElement(target)) {
-            return target;
-        }
-        return () => target;
-    };
+    // checkIsInstantiation = (target) => {
+    //     if (!React.isValidElement(target)) {
+    //         return target;
+    //     }
+    //     return () => target;
+    // };
 
     render() {
         console.log('promise render');
-        const Component = this.state.component;
-        return Component ?
-            (
-                <Component />
-            ) : (
+
+        const { auth, hasAuthed } = this.state;
+        if (!hasAuthed) {
+            return (
                 <div
                     style={{
                         width: '100%',
@@ -66,5 +81,14 @@ export default class PromiseRender extends React.PureComponent {
                     <Spin size="large"/>
                 </div>
             );
+        }
+        const {
+            ok,
+            error,
+        } = this.props;
+        if (auth) {
+            return ok;
+        }
+        return error;
     }
 }

@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { netApi as api } from 'network';
 import { enquireScreen } from 'enquire-js';
 import mapToProps from './BasicLayoutMapping';
 import logo from 'assets/img/logo.svg';
 import { appMenu } from 'utils/menu';
+import { basicLayoutRouterConfig, getRouterData } from 'utils/router';
+import { netApi as api } from 'network';
 
 import { Layout } from 'antd';
 import GlobalHeader from 'components/GlobalHeader';
 import GlobalFooter from 'components/GlobalFooter';
 import Exception from 'components/Exception';
 import SiderBar from 'components/SiderBar';
-import AuthorizedRoute from 'components/AuthorizedRoute';
-import routerData from 'utils/router';
+import AuthorizedRoute from 'components/Authorized/AuthorizedRoute';
 
 const { Content, Header, Footer } = Layout;
 
@@ -56,10 +56,10 @@ export default class BasicLayout extends React.Component {
         user: PropTypes.object,
         collapsed: PropTypes.bool,
         updateCollapsed: PropTypes.func,
+        push: PropTypes.func,
     }
 
     componentDidMount() {
-        this.props.getMenu();
         enquireScreen((mobile) => {
             this.setState({
                 isMobile: mobile,
@@ -67,7 +67,28 @@ export default class BasicLayout extends React.Component {
         });
     }
 
-    authority = () => api.post('/auth/passtest');
+    getBashRedirect = (routerData) => {
+        const { location: { pathname } } = this.props;
+        const redirect = pathname;
+        if (!redirect || redirect === '/') {
+            const authorizedRouter = routerData.find(item => (item.permission && item.path !== '/'));
+            return authorizedRouter && authorizedRouter.path;
+        }
+        return redirect;
+    }
+
+    handleLogout = async () => {
+        let res = await api.get('/login/logout').catch((err) => {});
+        if (res && res.data && res.data.code == 0) {
+            const { push, location } = this.props;
+            push({
+                pathname: '/login',
+                state: {
+                    fromUrl: location.pathname,
+                },
+            });
+        }
+    }
 
     render() {
         console.log('Basic Layout');
@@ -93,11 +114,14 @@ export default class BasicLayout extends React.Component {
         const headerProps = {
             user,
             collapsed,
-            onCollapse: updateCollapsed,
             isMobile,
-            logout: this.handleLogout,
             logo,
+            onCollapse: updateCollapsed,
+            handleLogout: this.handleLogout,
         };
+
+        const routerData = getRouterData(basicLayoutRouterConfig, appMenu);
+        const bashRedirect = this.getBashRedirect(routerData);
 
         return (
             <Layout>
@@ -112,21 +136,21 @@ export default class BasicLayout extends React.Component {
                                 redirectData.map(item => <Redirect key={item.from} exact from={item.from} to={item.to} />)
                             }
                             {
-                                routerData.BasicLayout.map(item =>
+                                routerData.map(item =>
                                     (
                                         <AuthorizedRoute
                                             key={item.key}
                                             path={item.path}
                                             component={item.component}
                                             exact={item.exact}
-                                            authority={this.authority}
+                                            authority={item.permission}
                                             redirectPath="/exception/403"
                                         />
                                     ))
                             }
                             <Route path='/exception/403' render={() => <Exception type='403' style={{ minHeight: 500, height: '80%' }} />} />
                             <Route path='/exception/500' render={() => <Exception type='500' style={{ minHeight: 500, height: '80%' }} />} />
-                            <Redirect exact from='/' to='/dashboard' />
+                            <Redirect exact from='/' to={bashRedirect} />
                             <Route render={() => <Exception type='404' style={{ minHeight: 500, height: '80%' }} />} />
                         </Switch>
                     </Content>

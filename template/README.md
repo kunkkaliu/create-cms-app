@@ -19,5 +19,5 @@ $ npm test
 ## Build
 
 ```shell
-$ npm run build
+$ npm run build_online
 ```

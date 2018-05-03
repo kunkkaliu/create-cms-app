@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve(dir) {
-    return path.join(__dirname, '../', dir)
+    return path.join(__dirname, '..', dir)
 }
 
 function src(dir) {
@@ -19,11 +19,13 @@ module.exports = {
     output: {
         path: resolve('dist'),
         filename: 'static/js/[name].js',
+        chunkFilename: 'static/js/[name].js',
         publicPath: '/'
     },
     plugins: [
         new webpack.DefinePlugin({
-            MOCK: !!process.env.MOCK
+            MOCK: !!process.env.MOCK,
+            CODE_ENV: JSON.stringify(process.env.CODE_ENV)
         }),
         new HtmlWebpackPlugin({
             template: src('index.html'),
@@ -41,6 +43,7 @@ module.exports = {
         alias: {
             'network': src('network'),
             'actions': src('actions'),
+            'containers': src('containers'),
             'components': src('components'),
             'utils': src('utils'),
             'assets': src('assets'),
@@ -82,7 +85,7 @@ module.exports = {
             },
             {
                 test: /\.css?$/,
-                use: ['style-loader', {
+                use: [MiniCssExtractPlugin.loader, {
                     loader: 'css-loader',
                     options: {
                         minimize: true
@@ -92,7 +95,7 @@ module.exports = {
             {
                 test: /\.less?$/,
                 exclude: /node_modules/,
-                use: ['style-loader', {
+                use: [MiniCssExtractPlugin.loader, {
                     loader: 'css-loader',
                     options: {
                         minimize: true,
@@ -104,7 +107,7 @@ module.exports = {
             {
                 test: /\.less?$/,
                 exclude: /src/,
-                use: ['style-loader', MiniCssExtractPlugin.loader, {
+                use: [MiniCssExtractPlugin.loader, {
                     loader: 'css-loader',
                     options: {
                         minimize: true

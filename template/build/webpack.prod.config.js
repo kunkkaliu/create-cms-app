@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var base = require('./webpack.config');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 base.mode = 'production';
 base.devtool = 'source-map';
@@ -53,5 +54,9 @@ base.plugins.push(
     }),
     new webpack.HashedModuleIdsPlugin()
 );
+
+if (!!process.env.ANALYZE) {
+    base.plugins.push(new BundleAnalyzerPlugin());
+}
 
 module.exports = base;

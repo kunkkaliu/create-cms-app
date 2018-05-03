@@ -4,10 +4,10 @@
 module.exports = {
     code: 0,
     data: {
-        role: 'admin',
+        codes: ['menu.dashboard'],
         user: {
-            name: '帅的一比',
-            avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+            fullname: '帅的一比',
+            avatar: '',
         },
     },
 };

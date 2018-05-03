@@ -3,35 +3,35 @@ import PropTypes from 'prop-types';
 import { Icon, Dropdown, Menu, Spin, Divider, Avatar } from 'antd';
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'react-router-dom';
+import avatar from 'assets/img/avatar.jpeg';
 import styles from './index.less';
+
+const spinStyle = {
+    marginLeft: 8,
+};
+const triggerMethod = ['hover', 'click'];
 
 export default class GlobalHeader extends React.PureComponent {
     constructor(props) {
         super(props);
         this.menu = (
-            <Menu className={styles.menu}>
-                <Menu.Item>
+            <Menu className={styles.menu} onClick={this.handleMenuClick}>
+                <Menu.Item key="1">
                     <Icon type="logout" />退出登录
                 </Menu.Item>
             </Menu>
         );
-        this.spinStyle = {
-            marginLeft: 8,
-        };
-        this.logoStyle = {
-            verticalAlign: 'middle',
-        };
-        this.triggerMethod = ['hover', 'click'];
     }
 
     static propTypes = {
         user: PropTypes.object,
-        logout: PropTypes.func,
+        handleLogout: PropTypes.func,
         collapsed: PropTypes.bool,
         isMobile: PropTypes.bool,
         onCollapse: PropTypes.func,
         logo: PropTypes.string,
     }
+
     componentWillUnmount() {
         this.triggerResizeEvent.cancel();
     }
@@ -53,14 +53,11 @@ export default class GlobalHeader extends React.PureComponent {
         }
     }
 
-    handleLogOut = () => {
-        const { logout } = this.props;
-        logout().payload.promise.then((res) => {
-            if (res.payload.data && res.payload.data.code == 0) {
-                const ssoURL = (res.payload.data && res.payload.data.data) || '';
-                window.location.href = ssoURL + encodeURIComponent(window.location.href);
-            }
-        });
+    handleMenuClick = (e) => {
+        const { handleLogout } = this.props;
+        if (e && e.key && e.key === '1') {
+            handleLogout && handleLogout();
+        }
     }
 
     render() {
@@ -72,6 +69,7 @@ export default class GlobalHeader extends React.PureComponent {
             logo,
         } = this.props;
 
+
         return (
             <div className={styles.header}>
                 {
@@ -79,7 +77,7 @@ export default class GlobalHeader extends React.PureComponent {
                         ([
                             (
                                 <Link to="/" className={styles.logo} key="logo">
-                                    <img style={this.logoStyle} src={logo} alt="logo" width="32" />
+                                    <img src={logo} alt="logo" width="32" />
                                 </Link>
                             ),
                             <Divider type="vertical" key="line" />,
@@ -88,15 +86,15 @@ export default class GlobalHeader extends React.PureComponent {
                 <Icon className={styles.trigger} onClick={this.toggle} type={collapsed ? 'menu-unfold' : 'menu-fold'} />
                 <div className={styles.right}>
                     {
-                        user.name ?
-                            <Dropdown overlay={this.menu} trigger={this.triggerMethod}>
+                        user.fullname ?
+                            <Dropdown overlay={this.menu} trigger={triggerMethod}>
                                 <span className={`${styles.action} ${styles.account}`}>
-                                    <Avatar size="small" className={styles.avatar} src={user.avatar} />
-                                    <span className={styles.name}>{user.name}</span>
+                                    <Avatar size="small" className={styles.avatar} src={user.avatar || avatar} />
+                                    <span className={styles.name}>{user.fullname}</span>
                                 </span>
                             </Dropdown>
                             :
-                            <Spin size="small" style={this.spinStyle} />
+                            <Spin size="small" style={spinStyle} />
                     }
                 </div>
             </div>

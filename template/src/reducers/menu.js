@@ -7,7 +7,7 @@ import {
     UPDATE_COLLAPSED,
 } from 'actions/menu';
 
-import { getMenus } from 'utils';
+import { getMenus } from 'utils/menu';
 
 const initialState = {
     menus: [],
@@ -25,7 +25,7 @@ export default function menu(state = initialState, action = {}) {
             });
         case GETMENU_SUCCESS:
             data = (action.payload.data && action.payload.data.data) || {};
-            menus = getMenus(data.role || '');
+            menus = getMenus(data.codes || []);
             return Object.assign({}, state, {
                 menus: menus,
                 user: data.user,

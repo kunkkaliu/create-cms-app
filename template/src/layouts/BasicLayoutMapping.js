@@ -2,7 +2,8 @@
  * Created by liudonghui on 2018/3/27.
  */
 import { bindActionCreators } from 'redux';
-import { getMenu, updateCollapsed } from 'actions/menu';
+import { push } from 'react-router-redux';
+import { updateCollapsed } from 'actions/menu';
 
 export default {
     mapStateToProps: state => ({
@@ -11,8 +12,8 @@ export default {
         collapsed: state.menu.collapsed,
     }),
     mapDispatchToProps: dispatch => ({
-        getMenu: bindActionCreators(getMenu, dispatch),
         updateCollapsed: bindActionCreators(updateCollapsed, dispatch),
+        push: bindActionCreators(push, dispatch),
     }),
 };
 

@@ -6,7 +6,7 @@ export default class GlobalFooter extends React.PureComponent {
         console.log('footer');
         return (
             <div className={styles.footer}>
-                xx 版权所有 © 2017 xx.com
+                xx 版权所有 © 2018 xx.com
             </div>
         );
     }
