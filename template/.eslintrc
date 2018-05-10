@@ -83,7 +83,8 @@
       "error",
       {
         "vars": "all",
-        "args": "none"
+        "args": "none",
+        "varsIgnorePattern": "Debounce|connect|mapToProps"
       }
     ],
     "no-continue": "off", // 不允许有 continue

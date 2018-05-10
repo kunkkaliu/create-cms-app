@@ -6,14 +6,23 @@ export function isPromise(obj) {
     );
 }
 
+//获取cookie中的值
 export function getCookie(name) {
-    const value = `;  ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    const partsLength = 2;
-    if (parts.length === partsLength) return parts.pop().split(';').shift();
-    return null;
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = window.document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
 }
 
-export function setCookie(name, date) {
+//设置cookie中的值 expiresDays是天数
+export function setCookie(name, value, expiresDays, path) {
+    var date = new Date();
+    date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000);
+    window.document.cookie = name + "=" + value + "; expires=" + date.toGMTString() + "; path=" + path;
+}
 
+//删除cookie中的值
+export function removeCookie(name) {
+    setCookie(name, '', -1);
 }
