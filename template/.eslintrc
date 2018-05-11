@@ -107,6 +107,7 @@
   },
   "globals": {
     "MOCK": false,
+    "CODE_VERSION": false,
     "CODE_ENV": false
   }
 }

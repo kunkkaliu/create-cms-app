@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var GitRevisionPlugin = require('git-revision-webpack-plugin');
+var gitRevisionPlugin = new GitRevisionPlugin();
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -10,6 +12,11 @@ function resolve(dir) {
 function src(dir) {
     return resolve(path.join('src', dir))
 }
+
+var theme = {};
+var pkgPath = resolve('package.json');
+var pkg = require(pkgPath);
+theme = pkg.theme;
 
 module.exports = {
     entry: {
@@ -25,6 +32,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             MOCK: !!process.env.MOCK,
+            CODE_VERSION: `"${gitRevisionPlugin.commithash()}"`,
             CODE_ENV: JSON.stringify(process.env.CODE_ENV)
         }),
         new HtmlWebpackPlugin({
@@ -35,7 +43,7 @@ module.exports = {
                 minifyJS: true
             },
             chunks: ['manifest', 'vendor', 'main'],
-            // favicon: __dirname + '/favicon.ico',
+            favicon: src('favicon.ico'),
             chunksSortMode: 'dependency'
         })
     ],
@@ -102,7 +110,12 @@ module.exports = {
                         modules: true,
                         localIdentName: '[local]___[hash:base64:5]'
                     }
-                }, 'postcss-loader', 'less-loader']
+                }, 'postcss-loader', {
+                    loader: 'less-loader',
+                    options: {
+                        modifyVars: theme
+                    }
+                }]
             },
             {
                 test: /\.less?$/,
@@ -112,7 +125,12 @@ module.exports = {
                     options: {
                         minimize: true
                     }
-                }, 'postcss-loader', 'less-loader']
+                }, 'postcss-loader', {
+                    loader: 'less-loader',
+                    options: {
+                        modifyVars: theme
+                    }
+                }]
             }
         ]
     }
