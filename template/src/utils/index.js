@@ -16,13 +16,13 @@ export function getCookie(name) {
 }
 
 //设置cookie中的值 expiresDays是天数
-export function setCookie(name, value, expiresDays, path) {
-    var date = new Date();
+export function setCookie(name, value, expiresDays) {
+    let date = new Date();
     date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000);
-    window.document.cookie = name + "=" + value + "; expires=" + date.toGMTString() + "; path=" + path;
+    window.document.cookie = name + '=' + value + ';expires=' + date.toGMTString() + ';path=/';
 }
 
 //删除cookie中的值
 export function removeCookie(name) {
-    setCookie(name, '', -1);
+    setCookie(name, 'test', -1);
 }
