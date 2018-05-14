@@ -5,7 +5,9 @@
 
 import axios from 'axios';
 import { push } from 'react-router-redux';
+import { message } from 'antd';
 import store from '../store';
+import globalConfig from '../globalConfig';
 
 const pending = []; // 声明一个数组用于存储每个ajax请求的取消函数和ajax标识
 const APICancelToken = axios.CancelToken;
@@ -19,9 +21,15 @@ const removePending = (config) => {
 };
 
 export const config = {
+    baseURL: globalConfig.apiHost,
     withCredentials: true,
     timeout: 30000,
 };
+
+message.config({
+    top: 100,
+    duration: 2,
+});
 
 export function useInterceptors(netApi) {
     // 统一处理所有http请求和响应, 在请求发出与返回时进行拦截, 在这里可以做loading页面的展示与隐藏, token失效是否跳转到登录页等事情;
@@ -39,10 +47,10 @@ export function useInterceptors(netApi) {
         // Do something with response data
         removePending(response.config); // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
         if (response.data && response.data.code && response.data.code !== 0) {
-            alert(response.data.message || response.data.data || '操作失败!');
+            message.error(response.data.message || '操作失败!');
         } else if (response.data && response.data.code === 0) {
             if (response.config && response.config.params && response.config.params.showMsg) {
-                alert(response.data.message || '操作成功!');
+                message.success(response.data.message || '操作成功!');
             }
         }
         return {
@@ -62,9 +70,9 @@ export function useInterceptors(netApi) {
             // const ssoURL = (error && error.response && error.response.data && error.response.data.data) || '';
             // document.location.href = ssoURL + encodeURIComponent(document.location.href);
         } else if (error && error.response && error.response.data && error.response.data.message) {
-            alert(error.response.data.message);
+            message.error(error.response.data.message);
         } else if (error && error.message) {
-            alert(error.message);
+            message.error(error.message);
         }
         return Promise.reject(error.response && error.response.data);
     });

@@ -4,8 +4,7 @@
 import pathToRegexp from 'path-to-regexp';
 
 const after_marker = {
-    'menu_person': ['menu.hqoperate', 'menu.hqoperate.store', 'menu.hqoperate.people'],
-    'after_market.base': ['menu.hqoperate', 'menu.hqoperate.report', 'menu.hqoperate.work', 'menu.hqoperate.store', 'menu.hqoperate.people'],
+    'menu_base': ['menu.dashboard'],
 };
 
 export function getPermissions(userPermissions) {

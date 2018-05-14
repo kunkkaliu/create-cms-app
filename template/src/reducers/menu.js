@@ -1,42 +1,38 @@
 /**
  * Created by liudonghui on 2018/3/16.
  */
-import {
-    GETMENU_PENDING,
-    GETMENU_SUCCESS,
-    UPDATE_COLLAPSED,
-} from 'actions/menu';
-
-import { getMenus } from 'utils/menu';
+import { actions } from 'actions/menu';
+import { ReducerFactory } from 'utils/reducerUtil';
+import { getPermissions, getMenus } from 'utils/menu';
 
 const initialState = {
     menus: [],
     user: {},
     collapsed: false,
 };
+const menu = ReducerFactory(initialState, 'menu');
 
-export default function menu(state = initialState, action = {}) {
-    let data, menus;
-    switch (action.type) {
-        case GETMENU_PENDING:
-            return Object.assign({}, state, {
-                menus: [],
-                user: {},
-            });
-        case GETMENU_SUCCESS:
-            data = (action.payload.data && action.payload.data.data) || {};
-            menus = getMenus(data.codes || []);
-            return Object.assign({}, state, {
-                menus: menus,
-                user: data.user,
-            });
+menu.action(actions.GETMENU_PENDING, function (state, action) {
+    return Object.assign({}, state, {
+        menus: [],
+        user: {},
+    });
+});
 
-        case UPDATE_COLLAPSED:
-            return Object.assign({}, state, {
-                collapsed: action.payload.collapsed,
-            });
+menu.action(actions.GETMENU_SUCCESS, function (state, action) {
+    const data = (action.payload.data && action.payload.data.data) || {};
+    const codes = getPermissions(data.codes || []);
+    const menus = getMenus(codes || []);
+    return Object.assign({}, state, {
+        menus: menus,
+        user: data.user || {},
+    });
+});
 
-        default:
-            return state;
-    }
-}
+menu.action(actions.UPDATE_COLLAPSED, function (state, action) {
+    return Object.assign({}, state, {
+        collapsed: action.payload.collapsed,
+    });
+});
+
+export default menu;

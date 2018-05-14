@@ -3,24 +3,25 @@
  */
 import { netApi as api } from 'network';
 
-export const GETMENU = 'menu/reducer/GETMENU';
-export const GETMENU_PENDING = 'menu/reducer/GETMENU_PENDING';
-export const GETMENU_SUCCESS = 'menu/reducer/GETMENU_SUCCESS';
-
-export const UPDATE_COLLAPSED = 'menu/reducer/UPDATE_COLLAPSED';
+export const actions = {
+    GETMENU: 'menu/reducer/GETMENU',
+    GETMENU_PENDING: 'menu/reducer/GETMENU_PENDING',
+    GETMENU_SUCCESS: 'menu/reducer/GETMENU_SUCCESS',
+    UPDATE_COLLAPSED: 'menu/reducer/UPDATE_COLLAPSED',
+};
 
 export function getMenu() {
     return {
-        type: GETMENU,
+        type: actions.GETMENU,
         payload: {
-            promise: api.post('/auth/menu'),
+            promise: api.get('/auth/menu'),
         },
     };
 }
 
 export function updateCollapsed(collapsed) {
     return {
-        type: UPDATE_COLLAPSED,
+        type: actions.UPDATE_COLLAPSED,
         payload: {
             collapsed,
         },

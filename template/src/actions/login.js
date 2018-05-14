@@ -3,14 +3,16 @@
  */
 import { netApi as api } from 'network';
 
-export const LOGIN = 'login/reducer/LOGIN';
-export const LOGIN_PENDING = 'login/reducer/LOGIN_PENDING';
-export const LOGIN_SUCCESS = 'login/reducer/LOGIN_SUCCESS';
-export const LOGIN_ERROR = 'login/reducer/LOGIN_ERROR';
+export const actions = {
+    LOGIN: 'login/reducer/LOGIN',
+    LOGIN_PENDING: 'login/reducer/LOGIN_PENDING',
+    LOGIN_SUCCESS: 'login/reducer/LOGIN_SUCCESS',
+    LOGIN_ERROR: 'login/reducer/LOGIN_ERROR',
+};
 
 export function login(data) {
     return {
-        type: LOGIN,
+        type: actions.LOGIN,
         payload: {
             promise: api.post('/login/login', {
                 ...data,

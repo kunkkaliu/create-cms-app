@@ -3,7 +3,6 @@
  */
 
 import axios from 'axios';
-import getMockInstance from './mock-generate';
 
 /**
  * 生成netApi对象
@@ -13,13 +12,25 @@ import getMockInstance from './mock-generate';
  */
 export function generateNet(config, useInterceptors) {
     if (MOCK) {
+        const getMockInstance = require('./mock-generate').default;
         const mock = getMockInstance();
         config.adapter = request => new Promise(resolve =>
             mock(request, (data) => {
                 setTimeout(() => {
-                    resolve(data);
-                }, 200);
+                    if (typeof data.data === 'function') {
+                        const { config } = data;
+                        const params = JSON.parse(config.data);
+                        resolve({
+                            ...data,
+                            data: data.data(params),
+                        });
+                    } else {
+                        resolve(data);
+                    }
+
+                }, 500);
             }));
+        config.baseURL = '';
     }
     const netApi = axios.create(config);
     useInterceptors(netApi);

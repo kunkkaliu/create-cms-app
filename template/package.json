@@ -63,6 +63,7 @@
     "lodash-decorators": "5.0.0",
     "path-to-regexp": "2.2.0",
     "prop-types": "15.6.1",
+    "raven-js": "3.24.0",
     "rc-drawer-menu": "0.5.7",
     "react": "16.2.0",
     "react-dom": "16.2.0",

@@ -1,22 +1,20 @@
 /**
  * Created by liudonghui on 17/6/19.
  */
-import {
-    ADDHTTPLOAD,
-    DELHTTPLOAD,
-} from 'actions/load';
+import { actions } from 'actions/load';
+import { ReducerFactory } from 'utils/reducerUtil';
 
 const initialState = {
     httpLength: 0,
 };
+const load = ReducerFactory(initialState, 'load');
 
-export default function load(state = initialState, action = {}) {
-    switch (action.type) {
-        case ADDHTTPLOAD:
-            return Object.assign({}, state, { httpLength: state.httpLength + 1 });
-        case DELHTTPLOAD:
-            return Object.assign({}, state, { httpLength: state.httpLength - 1 });
-        default:
-            return state;
-    }
-}
+load.action(actions.ADDHTTPLOAD, function (state, action) {
+    return Object.assign({}, state, { httpLength: state.httpLength + 1 });
+});
+
+load.action(actions.DELHTTPLOAD, function (state, action) {
+    return Object.assign({}, state, { httpLength: state.httpLength - 1 });
+});
+
+export default load;

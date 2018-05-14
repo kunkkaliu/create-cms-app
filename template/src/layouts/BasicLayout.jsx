@@ -72,9 +72,9 @@ export default class BasicLayout extends React.Component {
         const redirect = pathname;
         if (!redirect || redirect === '/') {
             const authorizedRouter = routerData.find(item => (item.permission && item.path !== '/'));
-            return authorizedRouter && authorizedRouter.path;
+            return authorizedRouter && authorizedRouter.path || '/exception/403';
         }
-        return redirect;
+        return redirect || '/exception/403';
     }
 
     handleLogout = async () => {

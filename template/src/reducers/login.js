@@ -1,43 +1,41 @@
 /**
  * Created by liudonghui on 2018/3/28.
  */
-import {
-    LOGIN_PENDING,
-    LOGIN_SUCCESS,
-    LOGIN_ERROR,
-} from 'actions/login';
+import { actions } from 'actions/login';
+import { ReducerFactory } from 'utils/reducerUtil';
 
 const initialState = {
     submitting: false,
     loginStatus: '',
 };
 
+const login = ReducerFactory(initialState, 'login');
 
-export default function login(state = initialState, action = {}) {
-    switch (action.type) {
-        case LOGIN_PENDING:
-            return Object.assign({}, state, {
-                submitting: true,
-                loginStatue: '',
-            });
-        case LOGIN_SUCCESS:
-            if (action.payload.data && action.payload.data.code == 0) {
-                return Object.assign({}, state, {
-                    submitting: false,
-                    loginStatus: 'success',
-                });
-            }
-            return Object.assign({}, state, {
-                submitting: false,
-                loginStatus: 'error',
-            });
-        case LOGIN_ERROR:
-            return Object.assign({}, state, {
-                submitting: false,
-                loginStatus: 'error',
-            });
+login.action(actions.LOGIN_PENDING, function (state, action) {
+    return Object.assign({}, state, {
+        submitting: true,
+        loginStatue: '',
+    });
+});
 
-        default:
-            return state;
+login.action(actions.LOGIN_SUCCESS, function (state, action) {
+    if (action.payload.data && action.payload.data.code == 0) {
+        return Object.assign({}, state, {
+            submitting: false,
+            loginStatus: 'success',
+        });
     }
-}
+    return Object.assign({}, state, {
+        submitting: false,
+        loginStatus: 'error',
+    });
+});
+
+login.action(actions.LOGIN_ERROR, function (state, action) {
+    return Object.assign({}, state, {
+        submitting: false,
+        loginStatus: 'error',
+    });
+});
+
+export default login;

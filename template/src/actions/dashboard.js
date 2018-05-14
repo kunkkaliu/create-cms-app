@@ -3,13 +3,15 @@
  */
 import { netApi as api } from 'network';
 
-export const CHANGENAME = 'dashboard/reducer/CHANGENAME';
-export const SUBMIT = 'dashboard/reducer/SUBMIT';
-export const SUBMIT_SUCCESS = 'dashboard/reducer/SUBMIT_SUCCESS';
+export const actions = {
+    CHANGENAME: 'dashboard/reducer/CHANGENAME',
+    SUBMIT: 'dashboard/reducer/SUBMIT',
+    SUBMIT_SUCCESS: 'dashboard/reducer/SUBMIT_SUCCESS',
+};
 
 export function changeName(name) {
     return {
-        type: CHANGENAME,
+        type: actions.CHANGENAME,
         payload: {
             name,
         },
@@ -18,7 +20,7 @@ export function changeName(name) {
 
 export function submit(name) {
     return {
-        type: SUBMIT,
+        type: actions.SUBMIT,
         payload: {
             promise: api.post('/test/greeter/sayhello', {
                 name,
