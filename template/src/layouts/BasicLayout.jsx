@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { enquireScreen } from 'enquire-js';
 import mapToProps from './BasicLayoutMapping';
 import logo from 'assets/img/logo.svg';
-import { appMenu } from 'utils/menu';
+import { appMenu, getRedirect } from 'utils/menu';
 import { basicLayoutRouterConfig, getRouterData } from 'utils/router';
 import { netApi as api } from 'network';
 
@@ -22,22 +22,6 @@ let isMobile;
 enquireScreen((b) => {
     isMobile = b;
 });
-
-const redirectData = [];
-const getRedirect = (item) => {
-    if (item && item.child) {
-        if (item.child[0] && item.child[0].router) {
-            redirectData.push({
-                from: `${item.router}`,
-                to: `${item.child[0].router}`,
-            });
-            item.child.forEach((children) => {
-                getRedirect(children);
-            });
-        }
-    }
-};
-appMenu.forEach(getRedirect);
 
 @connect(mapToProps.mapStateToProps, mapToProps.mapDispatchToProps)
 export default class BasicLayout extends React.Component {
@@ -122,6 +106,7 @@ export default class BasicLayout extends React.Component {
 
         const routerData = getRouterData(basicLayoutRouterConfig, appMenu);
         const bashRedirect = this.getBashRedirect(routerData);
+        const redirectData = getRedirect();
 
         return (
             <Layout>

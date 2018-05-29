@@ -27,6 +27,18 @@ export const appMenu = [
         slug: 'menu.dashboard',
         name: 'Dashboard',
         icon: 'desktop',
+    }, {
+        id: 2,
+        path: '/exception/403',
+        name: '没有权限',
+    }, {
+        id: 3,
+        path: '/exception/404',
+        name: '页面不存在',
+    }, {
+        id: 4,
+        path: '/exception/500',
+        name: '服务器错误',
     },
 ];
 
@@ -103,4 +115,30 @@ export function getPathArray(current) {
     };
     getPath(current);
     return pathArray;
+}
+
+/**
+ * 获取menus中重定向数组
+ * @returns {Array}
+ */
+export function getRedirect() {
+    const redirectData = [];
+    const myRedirect = (item) => {
+        if (item && item.child) {
+            for (let i = 0; i < item.child.length; i++) {
+                if (item.child[i].permission && item.child[i].path) {
+                    redirectData.push({
+                        from: `${item.path}`,
+                        to: `${item.child[i].path}`,
+                    });
+                    break;
+                }
+            }
+            item.child.forEach((children) => {
+                myRedirect(children);
+            });
+        }
+    };
+    appMenu.forEach(myRedirect);
+    return redirectData;
 }

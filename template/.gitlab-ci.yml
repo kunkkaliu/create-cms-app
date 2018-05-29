@@ -1,0 +1,50 @@
+stages:
+    - prepare
+    - build
+    - rsync
+
+prepare-docker:
+  stage: prepare
+  only:
+      - online
+  script:
+      - med prepare -n xxx-fe-prepare
+
+
+build-code:
+  stage: build
+  only:
+      - online
+  script:
+      - med build -n xxx-fe-release
+
+
+rsync-release:
+  stage: rsync
+  only:
+      - online
+  script:
+      - med push -n xxx-fe-deploy
+
+
+cloud-prepare:
+  stage: prepare
+  only:
+      - qa
+  script:
+      - med prepare -n xxx-fe-prepare
+
+cloud-build:
+  stage: build
+  only:
+      - qa
+  script:
+      - med build -n xxx-fe-release
+
+cloud-push:
+  stage: rsync
+  only:
+      - qa
+  script:
+      - med deploy -n xxx-fe-deploy
+

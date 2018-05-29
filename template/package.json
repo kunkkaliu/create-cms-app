@@ -8,8 +8,7 @@
     "build_online": "rimraf ./dist && cross-env CODE_ENV=online webpack --config ./build/webpack.prod.config.js --progress --colors",
     "analyze": "cross-env ANALYZE=1 npm run build_online",
     "mock": "cross-env MOCK=1 npm run dev",
-    "dev": "cross-env CODE_ENV=dev node devServer",
-    "genprotojs": "node ./build/gen-proto-js.js"
+    "dev": "cross-env CODE_ENV=dev node devServer"
   },
   "jest": {
     "moduleNameMapper": {
@@ -53,7 +52,7 @@
     }
   },
   "dependencies": {
-    "antd": "3.5.1",
+    "antd": "3.5.4",
     "axios": "0.18.0",
     "axios-mock-adapter": "1.14.1",
     "babel-polyfill": "6.26.0",

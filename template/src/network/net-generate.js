@@ -10,29 +10,34 @@ import axios from 'axios';
  * @param useInterceptors 全局拦截器
  * @return {AxiosInstance}
  */
-export function generateNet(config, useInterceptors) {
+export function generateNet(netConfig, useInterceptors) {
     if (MOCK) {
         const getMockInstance = require('./mock-generate').default;
         const mock = getMockInstance();
-        config.adapter = request => new Promise(resolve =>
-            mock(request, (data) => {
+        netConfig.adapter = request => new Promise(resolve =>
+            mock(request, (response) => {
                 setTimeout(() => {
-                    if (typeof data.data === 'function') {
-                        const { config } = data;
-                        const params = JSON.parse(config.data);
+                    if (typeof response.data === 'function') {
+                        let { config: { method, params, data } } = response;
+                        if (method === 'post') {
+                            params = JSON.parse(data);
+                        }
+                        if (!params) {
+                            params = {};
+                        }
                         resolve({
-                            ...data,
-                            data: data.data(params),
+                            ...response,
+                            data: response.data(params),
                         });
                     } else {
-                        resolve(data);
+                        resolve(response);
                     }
 
                 }, 500);
             }));
-        config.baseURL = '';
+        netConfig.baseURL = '';
     }
-    const netApi = axios.create(config);
+    const netApi = axios.create(netConfig);
     useInterceptors(netApi);
     return netApi;
 }

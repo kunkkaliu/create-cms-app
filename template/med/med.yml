@@ -1,0 +1,45 @@
+repo:
+  name: xxx-fe
+  project: am
+  namespace: default
+
+prepare:
+- image: library/node-yarn:v8.1.0
+  name: xxx-fe-prepare
+  workdir: /med
+  version: v1.0.0
+  copy:
+    - ./package.json /med/
+    - ./yarn.lock /med/
+  run:
+    - yarn config set registry https://registry.npm.taobao.org
+    - yarn
+
+build:
+- workdir: /med
+  name: xxx-fe-build
+  base: xxx-fe-prepare
+  copy:
+    - . /med
+  run:
+    - npm run build_{{env}}
+
+- image: library/nginx:latest
+  name: xxx-fe-release
+  copy_from:
+  - xxx-fe-build /med/dist /med/
+  - xxx-fe-build /med/nginx.conf /etc/nginx/conf.d/default.conf
+  - xxx-fe-build /med/entrypoint.sh /med/entrypoint.sh
+
+deploy:
+- name: xxx-fe-deploy
+  base: xxx-fe-release
+  command: /med/entrypoint.sh
+  replicas: {{replicas}}
+  domains: hehe
+  labels:
+      app: xxx-fe
+  rules:
+      - port: 80
+        name: http
+        path: /.*
