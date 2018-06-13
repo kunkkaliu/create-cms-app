@@ -1,5 +1,13 @@
 # 更新日志
 
+## v1.1.5
+
+`2018-06-12`
+
+- 修复在ie下fireEvent导致的bug
+- 修复在firefox下initEvent导致的bug
+
+
 ## v1.1.4
 
 `2018-05-29`

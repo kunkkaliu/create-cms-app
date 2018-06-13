@@ -46,10 +46,11 @@ export default class GlobalHeader extends React.PureComponent {
     triggerResizeEvent() {
         if (document.createEvent) {
             const event = document.createEvent('HTMLEvents');
-            event.initEvent('resize');
+            event.initEvent('resize', true, true);
             window.dispatchEvent(event);
         } else if (document.createEventObject) {
-            window.fireEvent('onresize');
+            const event = document.createEventObject();
+            window.fireEvent('onresize', event);
         }
     }
 
