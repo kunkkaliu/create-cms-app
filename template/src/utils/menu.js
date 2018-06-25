@@ -70,7 +70,9 @@ export function getMenus(codes) {
                 if (menus[i].child && menus[i].child.length >= 0) {
                     menuTmp.child = myMenus(menus[i].child, codes);
                 }
-                appMenuTmp.push(menuTmp);
+                if (!menuTmp.hide) {
+                    appMenuTmp.push(menuTmp);
+                }
             }
         }
         return appMenuTmp;
