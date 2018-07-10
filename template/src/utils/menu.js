@@ -20,6 +20,8 @@ export function getPermissions(userPermissions) {
     return permissions;
 }
 
+export const rootSubMenuKeys = ['sub1', 'sub2', 'sub3', 'sub4'];
+
 export const appMenu = [
     {
         id: 1,
