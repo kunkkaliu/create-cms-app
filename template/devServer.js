@@ -42,7 +42,7 @@ if (isDeveloping) {
 
 var port = isProduction ? (process.env.PORT || 80) : 3003;
 
-// app.use('/api/*', proxy({ target: 'http://b.guazi.com', changeOrigin: true, secure: false })); // 与后台联调时,如果后台没有做跨域处理的话,可以通过设置代理的方式来解决跨域的问题
+// app.use('/api/*', proxy({ target: 'http://b.xx.com', changeOrigin: true, secure: false })); // 与后台联调时,如果后台没有做跨域处理的话,可以通过设置代理的方式来解决跨域的问题
 
 app.listen(port, function (err, result) {
     if (err) {
