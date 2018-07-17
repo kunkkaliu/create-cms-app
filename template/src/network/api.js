@@ -36,7 +36,7 @@ export function useInterceptors(netApi) {
     netApi.interceptors.request.use((request) => {
         // Do something before request is sent
         removePending(request); // 在一个ajax发送前执行一下取消操作
-        config.cancelToken = new APICancelToken((c) => {
+        request.cancelToken = new APICancelToken((c) => {
             // 这里的ajax标识我是用请求地址&请求方式拼接的字符串，当然你可以选择其他的一些方式
             pending.push({ u: `${request.url}&${request.method}`, f: c });
         });
