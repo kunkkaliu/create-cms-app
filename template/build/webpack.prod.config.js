@@ -18,7 +18,7 @@ base.output.chunkFilename = 'static/js/[name].[chunkhash].js';
 
 base.optimization = {
     runtimeChunk: {
-        name: "manifest"
+        name: "runtime"
     },
     splitChunks: {
         cacheGroups: {

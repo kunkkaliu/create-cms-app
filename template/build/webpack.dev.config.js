@@ -12,7 +12,7 @@ Object.keys(base.entry).forEach(function (name) {
 // base.entry.unshift('babel-polyfill', 'react-hot-loader/patch', 'webpack-hot-middleware/client');
 base.optimization = {
     runtimeChunk: {
-        name: "manifest"
+        name: "runtime"
     },
     splitChunks: {
         cacheGroups: {

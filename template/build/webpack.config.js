@@ -4,6 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var GitRevisionPlugin = require('git-revision-webpack-plugin');
 var gitRevisionPlugin = new GitRevisionPlugin();
+var InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -22,6 +23,7 @@ module.exports = {
     entry: {
         main: src('index.jsx')
     },
+    devtool: 'inline-source-map',
     target: 'web',
     output: {
         path: resolve('dist'),
@@ -36,16 +38,25 @@ module.exports = {
             CODE_ENV: JSON.stringify(process.env.CODE_ENV)
         }),
         new HtmlWebpackPlugin({
+            title: 'xxx系统',
             template: src('index.html'),
             filename: 'index.html',
             minify: {
                 minifyCSS: true,
-                minifyJS: true
+                minifyJS: true,
+                collapseWhitespace: true,
+                collapseInlineTagWhitespace: true,
+                removeRedundantAttributes: true,
+                removeEmptyAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                removeComments: true
             },
-            chunks: ['manifest', 'vendor', 'main'],
+            chunks: ['runtime', 'vendor', 'main'],
             favicon: src('favicon.ico'),
             chunksSortMode: 'dependency'
-        })
+        }),
+        new InlineManifestWebpackPlugin('runtime')
     ],
     resolve: {
         alias: {
